@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>A Casa</title>
+<style>
+
+     /*===== VISUALIZAÇÃO ===== */
+
+    body {
+        margin: 0;
+        background: black;
+        overflow: hidden;
+        font-family: 'Courier New', monospace;
+        color: white;
+    }
+
+    /* ===== MENU ===== */
+    #menu {
+        position: fixed;
+        inset: 0;
+        background: black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+
+    #menu h1 {
+        color: darkred;
+        margin-bottom: 20px;
+        text-shadow: 0 0 15px red;
+    }
+
+    #menu h2, #menu h3 {
+        margin: 10px 0;
+        max-width: 600px;
+        text-align: center;
+        font-weight: normal;
+        color: darkred;
+    }
+
+    #menu button {
+        padding: 15px 30px;
+        font-size: 20px;
+        cursor: pointer;
+        background: black;
+        color: white;
+        border: 2px solid darkred;
+    }
+
+    #menu button:hover {
+        background: darkred;
+    }
+
+    /* ===== JOGO ===== */
+    #game {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        cursor: none;
+        display: none;
+    }
+
+    #lanterna {
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        pointer-events: none;
+        background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.96) 70%);
+    }
+
+    #chave {
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        background: #2e2e2e;
+        border-radius: 4px;
+    }
+
+    #monstro {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: rgb(0, 0, 0);
+        border-radius: 50%;
+        box-shadow: 0 0 20px red;
+    }
+
+    #mensagem {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 18px;
+        text-shadow: 0 0 10px red;
+    }
+
+    .chave{
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        background-image: url('https://loja.stam.com.br/app/assets/images/dinamica/produto/10717/cor_0/41015-chave-cadeado-zamac-35--40--45mm-caixa-10-unidades-131221-867b82.jpg');
+        border-radius: 4px;
+    }
+
+    #hud {
+        position: fixed;
+        font-family: 'times new roman', serif;
+        left: 10px;
+        font-size: 18px;
+        z-index: 15;
+        opacity: 2;
+    }
+
+    /* ===== JUMPSCARE ===== */
+    #jumpscare {
+        position: fixed;
+        inset: 0;
+        background: black;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 20;
+    }
+
+    #jumpscare div {
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle, red, black);
+        animation: piscar 0.1s infinite;
+    }
+
+    @keyframes piscar {
+        0% { opacity: 1; }
+        50% { opacity: 0.2; }
+        100% { opacity: 1; }
+    }
+
+    #jumpscare div {
+        background-image: url('https://i.ytimg.com/vi/Vy3DCSJse60/hqdefault.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+</style>
+</head>
+
+<body>
+
+    <!-- MODELAGEM -->
+
+<!-- MENU -->
+<div id="menu">
+    <h1>A CASA</h1>
+    <button onclick="iniciarJogo()">INICIAR</button>
+    <h2>CASO ESTEJA PRONTO PRA JOGAR A CASA CLIQUE ACIMA</h2>
+    <h3>Você é um homem que foi designado a investigação de um caso na A CASA, ja havia diversos relatos que esse lugar era amaldiçoado por um monstro que vivia lá dentro.</h3>
+</div>
+
+<!-- JOGO -->
+<div id="game">
+    <div id="lanterna"></div>
+    <div id="monstro"></div>
+    <div id="mensagem">Encontre a chave... antes que ele te encontre...</div>
+</div>
+
+<!-- JUMPSCARE -->
+<div id="jumpscare">
+
+<div></div>
+
+</div>
+
+<!-- HUD -->
+
+<div id="hud">
+    <p id="hudChaves">Chaves: 0 / 3</p>
+</div>
+
+    <!-- CONTROLE -->
+<script>
+
+// elementos do jogo
+    const menu = document.getElementById("menu");
+    const game = document.getElementById("game");
+    const lanterna = document.getElementById("lanterna");
+    const monstro = document.getElementById("monstro");
+    const mensagem = document.getElementById("mensagem");
+    const jumpscare = document.getElementById("jumpscare");
+
+    let jogoAtivo = false;
+    let playerX = 0;
+    let playerY = 0;
+    let monstroX = 0;
+    let monstroY = 0;
+    let totalchaves = 3;
+    let chavesColetadas = 0;
+    let chaves = []
+
+    function iniciarJogo() {
+
+    menu.style.display = "none";
+    game.style.display = "block";
+    jogoAtivo = true;
+
+    // reset
+    chavesColetadas = 0;
+    chaves.forEach(c => c.remove());
+    chaves = [];
+
+    atualizarHUD();
+
+    // criar várias chaves
+    for (let i = 0; i < totalchaves; i++) {
+        const novaChave = document.createElement("div");
+        novaChave.classList.add("chave");
+
+        novaChave.style.left = Math.random() * (window.innerWidth - 26) + "px";
+        novaChave.style.top = Math.random() * (window.innerHeight - 26) + "px";
+
+        game.appendChild(novaChave);
+        chaves.push(novaChave);
+
+        novaChave.addEventListener("click", () => {
+            if (!jogoAtivo) return;
+
+            novaChave.remove();
+            chavesColetadas++;
+            atualizarHUD();
+
+            if (chavesColetadas === totalchaves) {
+                vencerJogo();
+            }
+        });
+    }
+
+    // monstro
+    monstroX = Math.random() * (window.innerWidth - 50);
+    monstroY = Math.random() * (window.innerHeight - 50);
+    monstro.style.left = monstroX + "px";
+    monstro.style.top = monstroY + "px";
+
+    moverMonstro();
+}
+
+    // faz com que a lanterna siga o mouse
+    document.addEventListener("mousemove", e => {
+        playerX = e.clientX;
+        playerY = e.clientY;
+
+        lanterna.style.left = playerX - 110 + "px";
+        lanterna.style.top = playerY - 110 + "px";
+    });
+
+    //quando clicar na chave o jogo acaba
+    chave.addEventListener("click", () => {
+        if (!jogoAtivo) return;
+        mensagem.innerText = "Você escapou...";
+        mensagem.style.color = "lightgreen";
+        jogoAtivo = false;
+        monstro.style.display = "none";
+    });
+
+    //HUD
+    function atualizarHUD() {
+    document.getElementById("hudChaves").innerText =
+        `Chaves: ${chavesColetadas} / ${totalchaves}`;
+}
+
+    //movimento do monstro
+    function moverMonstro() {
+        if (!jogoAtivo) return;
+
+        const dx = playerX - monstroX;
+        const dy = playerY - monstroY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+
+        const velocidade = 7;
+        monstroX += (dx / dist) * velocidade;
+        monstroY += (dy / dist) * velocidade;
+
+        monstro.style.left = monstroX + "px";
+        monstro.style.top = monstroY + "px";
+
+        if (dist < 40) {
+            jumpscare.style.display = "flex";
+            jogoAtivo = false;
+        }
+
+        requestAnimationFrame(moverMonstro);
+    }
+
+    // vitória
+    function vencerJogo() {
+    mensagem.innerText = "Você escapou...por enquanto.";
+    mensagem.style.color = "darkred";
+    jogoAtivo = false;
+    monstro.style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
