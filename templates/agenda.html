@@ -6,7 +6,23 @@
         <input type="date" name="data-conclusao" id="data-conclusao">
         <button type="submit">Adicionar</button>
     </form>
-    <p>{{tarefa.titulo_tarefa }} - {{tarefa.data_conclusao }}</p>
+
+    <h2>Lista de tarefas</h2>
+
+    {% if tarefas %}
+
+    <ul>
+        {% for tarefa in tarefas %}
+            <li>{{ tarefa.titulo_tarefa }} - {{ tarefa.data_conclusao }}</li>
+            {% endfor %}
+    </ul>
+
+    {% else %}
+
+         <p>Nenhuma tarefa cadastrada</p>
+
+    {% endif %}
+
 {% endblock %}
 
 <!-- Métodos HTTP:
