@@ -1,6 +1,6 @@
 p {
     color: red;
-    text-align: center;;
+    text-align: center;
     font-family: 'Times New Roman', Times, serif;
     font-weight: 700;
 }
@@ -52,8 +52,14 @@ form {
     margin: 3px;
 }
 
-    ul{
-        padding: 15px;
+   ul {
+    padding-left: 20px;
+    display: inline-block;
+    
+}
+
+ul li {
+    margin-bottom: 10px; 
 }
 
 
