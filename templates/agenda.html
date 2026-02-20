@@ -9,6 +9,7 @@
             {% if tarefa_selecionada %}
 
                 <a href="{{ url_for('agenda') }}" class="btn btn-secondary">Cancelar</a>
+                <a href="{{ url_for('delete', idTarefa=tarefa_selecionada.id_tarefa) }}" class="btn btn-danger">Apagar</a>
 
             {% endif %}
     </form>
