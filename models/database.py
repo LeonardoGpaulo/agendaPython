@@ -14,7 +14,8 @@ def init_db(db_name: str = DB_PATH) -> None:
         CREATE TABLE IF NOT EXISTS tarefas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             titulo_tarefa TEXT NOT NULL,
-            data_conclusao TEXT
+            data_conclusao TEXT,
+            concluida INTEGER DEFAULT 0
         );
         """)
 

@@ -2,8 +2,8 @@
 
 {% block content %}
     <form method="post">
-            <input type="text" name="titulo-tarefa" id="titulo-tarefa" placeholder="titulo da tarefa"value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
-            <input type="date" name="data-conclusao" id="data-conclusao" value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
+            <input type="text" class= "titulo" name="titulo-tarefa" id="titulo-tarefa" placeholder="titulo da tarefa"value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
+            <input type="date" class= "data" name="data-conclusao" id="data-conclusao" value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
             <button type="submit">Salvar</button>
 
             {% if tarefa_selecionada %}
@@ -14,15 +14,27 @@
     </form>
 
     <h2>Lista de tarefas</h2>
-    {% if tarefas %}
 
+    {% if tarefas %}
     <ul>
+
+        
         {% for tarefa in tarefas %}
-            <li>{{ tarefa.titulo_tarefa }} - {{ tarefa.data_conclusao }}
-            <a href="{{ url_for('delete', idTarefa=tarefa.id_tarefa) }}" class="btn btn-danger">Apagar</a></li>
-            <a href="{{ url_for('uptade', idTarefa=tarefa.id_tarefa) }}" class="btn btn-primary">Editar</a>
-            <!-- Controle para editar-->
-            {% endfor %}
+
+<li class="tarefa-finalizada {% if tarefa.concluida == 1 %}tarefa-concluida{% endif %}">
+
+    {{ tarefa.titulo_tarefa }} | {{ tarefa.data_conclusao }}
+
+    <a href="{{ url_for('uptade', idTarefa=tarefa.id_tarefa) }}" class="btn btn-primary">Editar</a>
+
+    {% if not tarefa.concluida %}
+    <a href="{{ url_for('delete', idTarefa=tarefa.id_tarefa) }}" class="btn btn-danger">Apagar</a>
+    <a href="{{ url_for('complete', idTarefa=tarefa.id_tarefa) }}" class="btn btn-success">Concluir</a>
+    {% endif %}
+
+</li>
+
+        {% endfor %}
     </ul>
 
     {% else %}
