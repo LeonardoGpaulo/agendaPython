@@ -36,6 +36,12 @@ def complete(idTarefa):
     tarefa.completar_tarefa()
     return redirect(url_for('agenda'))
 
+@app.route('/reabrir/<int:idTarefa>')
+def reabrir(idTarefa):
+    tarefa = Tarefa.id(idTarefa)
+    tarefa.reabrir_tarefa()
+    return redirect(url_for('agenda'))
+
 
 
 @app.route('/uptade/<int:idTarefa>', methods = ['GET', 'POST'])
