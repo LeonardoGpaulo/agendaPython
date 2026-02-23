@@ -15,7 +15,7 @@ def init_db(db_name: str = DB_PATH) -> None:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             titulo_tarefa TEXT NOT NULL,
             data_conclusao TEXT,
-            concluida INTEGER DEFAULT 0
+            concluida INT DEFAULT 0
         );
         """)
 
