@@ -65,6 +65,13 @@ class Tarefa:
             resultado: Cursor = db.executar(query, params)
             return resultado
         
+    def reabrir_tarefa(self) -> Cursor:
+        with Database() as db:
+            query: str = 'UPDATE tarefas SET concluida = 0 WHERE id = ?;'
+            params:tuple = (self.id_tarefa,)
+            resultado: Cursor = db.executar(query, params)
+            return resultado
+        
     def atualizar_tarefa(self) -> Cursor:
         with Database() as db:
             query: str = 'UPDATE tarefas SET titulo_tarefa = ?, data_conclusao = ?, concluida = 0 WHERE id = ?;'
