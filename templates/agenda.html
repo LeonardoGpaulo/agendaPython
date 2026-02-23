@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<body class="agenda">
+    
+
     <form method="post">
             <input type="text" class= "titulo" name="titulo-tarefa" id="titulo-tarefa" placeholder="titulo da tarefa"value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
             <input type="date" class= "data" name="data-conclusao" id="data-conclusao" value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
@@ -9,7 +12,6 @@
             {% if tarefa_selecionada %}
 
                 <a href="{{ url_for('agenda') }}" class="btn btn-secondary">Cancelar</a>
-                <a href="{{ url_for('delete', idTarefa=tarefa_selecionada.id_tarefa) }}" class="btn btn-danger">Apagar</a>
 
             {% endif %}
     </form>
@@ -22,11 +24,20 @@
         
         {% for tarefa in tarefas %}
 
-<li class="tarefa-finalizada {% if tarefa.concluida == 1 %}tarefa-concluida{% endif %}">
+        
+<li >
 
-    {{ tarefa.titulo_tarefa }} | {{ tarefa.data_conclusao }}
+    
+    <span class="tarefa-finalizada {% if tarefa.concluida == 1 %}tarefa-concluida{% endif %}">
+        {{ tarefa.titulo_tarefa }} | {{ tarefa.data_conclusao }}
+    </span>
+        
+    
+        <a href="{{ url_for('uptade', idTarefa=tarefa.id_tarefa) }}" class="btn btn-primary">Editar</a>
 
-    <a href="{{ url_for('uptade', idTarefa=tarefa.id_tarefa) }}" class="btn btn-primary">Editar</a>
+    {% if tarefa.concluida %}
+    <a href="{{ url_for('reabrir', idTarefa=tarefa.id_tarefa) }}" class="btn btn-reabrir">reabrir</a>
+    {% endif%}
 
     {% if not tarefa.concluida %}
     <a href="{{ url_for('delete', idTarefa=tarefa.id_tarefa) }}" class="btn btn-danger">Apagar</a>
@@ -44,6 +55,7 @@
 
     {% endif %}
 
+</body>
 {% endblock %}
 
 <!-- Métodos HTTP:
