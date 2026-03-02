@@ -1,15 +1,17 @@
-
+#ambiente virtual
 .venv/ 
+env/
 
-
+# Cache do pythin
 __pycache__/
 *.pyc
 
-
+# Banco de dados local (para não enviar seus testes para o GitHub)
 data/
 *.db
 *.sqlite
 *.sqlite3
 
-
-.env
+# arquivos de sistema e IDE
+.vscode/
+.idea/
