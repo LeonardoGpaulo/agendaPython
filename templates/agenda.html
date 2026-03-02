@@ -5,35 +5,33 @@
     
 
     <form method="post">
-            <input type="text" class= "titulo" name="titulo-tarefa" id="titulo-tarefa" placeholder="titulo da tarefa"value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
-            <input type="date" class= "data" name="data-conclusao" id="data-conclusao" value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
-            <button type="submit">Salvar</button>
+    <input type="text" class= "titulo" name="titulo-tarefa" id="titulo-tarefa" placeholder="titulo da tarefa"value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
+    <input type="date" class= "data" name="data-conclusao" id="data-conclusao" value="{{tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}">
+    <button type="submit">Salvar</button>
 
-            {% if tarefa_selecionada %}
+    {% if tarefa_selecionada %}
 
-                <a href="{{ url_for('agenda') }}" class="btn btn-secondary">Cancelar</a>
+        <a href="{{ url_for('agenda') }}" class="btn btn-secondary">Cancelar</a>
 
-            {% endif %}
+    {% endif %}
     </form>
 
     <h2>Lista de tarefas</h2>
 
     {% if tarefas %}
-    <ul>
 
-        
+
+    <ul>  
         {% for tarefa in tarefas %}
-
-        
-<li >
-
-    
+ 
+<li>
+ 
     <span class="tarefa-finalizada {% if tarefa.concluida == 1 %}tarefa-concluida{% endif %}">
         {{ tarefa.titulo_tarefa }} | {{ tarefa.data_conclusao }}
     </span>
         
     
-        <a href="{{ url_for('uptade', idTarefa=tarefa.id_tarefa) }}" class="btn btn-primary">Editar</a>
+     <a href="{{ url_for('uptade', idTarefa=tarefa.id_tarefa) }}" class="btn btn-primary">Editar</a>
 
     {% if tarefa.concluida %}
     <a href="{{ url_for('reabrir', idTarefa=tarefa.id_tarefa) }}" class="btn btn-reabrir">reabrir</a>
@@ -57,22 +55,3 @@
 
 </body>
 {% endblock %}
-
-<!-- Métodos HTTP:
-    GET -> "pega" (recupera/obtém) as informações (READ)
-    POST -> "envia" (cadastra/inclui/adiciona) as informações
-    (CREATE)
-    UPTADE -> "atualiza" as informações (UPTADE)
-    PATCH ->"atualiza" parte das informações (UPTADE)
-    DELETE -> "apaga" as informações (DELETE)
-
-    CRUD -> Create, Read, Uptade, Delete
--->
-
-<!-- Códigos de retorno:
-    2XX- Sucesso
-    3XX - Sucesso, mas redirecionado
-    4XX - Não encontrado (falha na REQUISIÇÃO)
-    5XX - Erro do servidor (falha na RESPOSTA)
-
--->

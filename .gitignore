@@ -1,15 +1,15 @@
-# Ambiente virtual
+
 .venv/ 
 
-# Arquivos Python compilados
+
 __pycache__/
 *.pyc
 
-# Banco de Dados SQLite
+
 data/
 *.db
 *.sqlite
 *.sqlite3
 
-# Variáveis de ambiente
+
 .env
